@@ -56,6 +56,14 @@ const CORE_VALUES = [
   "Respect",
 ];
 
+// NOTE: Each story photo can optionally set `objectPosition` to fine-tune how
+// it's cropped inside the fixed 4:5 card frame. Most portrait photos look
+// fine with the default ("center 15%", biased slightly toward the top so
+// heads aren't cut off). A few photos are framed differently by the
+// photographer (closer crop, subject positioned differently in frame) and
+// need their own value — adjust the percentage until the subject sits well
+// inside the card. Format is CSS `object-position`: "x% y%" (y% controls
+// vertical framing, which is what usually needs adjusting for portraits).
 const SUCCESS_STORIES = [
   {
     photo: "/img_7.jpeg",
@@ -122,6 +130,10 @@ const SUCCESS_STORIES = [
     name: "Stephine Moseti",
     achievement: "Diploma in Social Work",
     story: "Stephine studied at the East African Institute, attaining her Diploma in Social Work in 2018.",
+    // This source photo is a closer/tighter portrait than the others, so the
+    // shared default crop pushed the top of the head out of frame. Biasing
+    // further toward the top (a smaller y%) keeps the whole head visible.
+    objectPosition: "center 8%",
   },
   {
     photo: "/img_28.png",
@@ -417,8 +429,13 @@ function Stories({ id = "stories", eyebrow = "Real impact", title = "Success Sto
               key={person.name}
               className="story-card overflow-hidden rounded-2xl bg-white/60 shadow-lg ring-1 ring-[#FAAA48]/30"
             >
-              <div className="aspect-[4/5] w-full overflow-hidden">
-                <img src={person.photo} alt={person.name} className="h-full w-full object-cover" />
+              <div className="aspect-[4/5] w-full overflow-hidden bg-[#2F0F03]/10">
+                <img
+                  src={person.photo}
+                  alt={person.name}
+                  className="h-full w-full object-cover"
+                  style={{ objectPosition: person.objectPosition || "center 15%" }}
+                />
               </div>
               <div className="p-5">
                 <h3 className="font-display text-lg font-semibold">{person.name}</h3>

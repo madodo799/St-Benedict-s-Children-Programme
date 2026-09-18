@@ -118,7 +118,7 @@ const SUCCESS_STORIES = [
     story: "Peter studied at the Technical University of Kenya, attaining his Diploma in Medical Records in 2019.",
   },
   {
-    photo: "/img_27.png",
+    photo: "/img_29.jpg",
     name: "Stephine Moseti",
     achievement: "Diploma in Social Work",
     story: "Stephine studied at the East African Institute, attaining her Diploma in Social Work in 2018.",

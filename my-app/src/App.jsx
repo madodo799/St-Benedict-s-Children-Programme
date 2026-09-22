@@ -141,6 +141,18 @@ const SUCCESS_STORIES = [
     achievement: "Degree in Statistics",
     story: "Patrick studied at Taita Taveta University, attaining his Degree in Statistics in 2018.",
   },
+   {
+    photo: "/img_1.jpg",
+    name: "Degracious Esamai",
+    achievement: "Diploma in Mechanical Engineering",
+    story: "Degracious  studied at Nairobi National Polytechnic, attaining his Diploma in Mechanical Engineering in 2026.",
+  },
+   {
+    photo: "/img_2.jpg",
+    name: "Charles Mwangi",
+    achievement: "Diploma in Automotive Engineering",
+    story: "Mwangi studied at Nairobi National Polytechnic, attaining his Diploma in Automotive Engineering in 2026",
+  },
 ];
 
 const GALLERY_IMAGES = [

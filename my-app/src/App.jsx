@@ -175,7 +175,7 @@ const GALLERY_IMAGES = [
 const ACTIVITY_IMAGES = [
   { src: "/img_1.jpeg", alt: "Activity photo 1" },
   { src: "/img_2.jpeg", alt: "Activity photo 2" },
-  { src: "/img_3.jpeg", alt: "Activity photo 3" },
+  { src: "/img_13.jpeg", alt: "Activity photo 3" },
   { src: "/img_4.jpeg", alt: "Activity photo 4" },
   { src: "/img_5.jpeg", alt: "Activity photo 5" },
   { src: "/img_12.jpeg", alt: "Activity photo 6" },

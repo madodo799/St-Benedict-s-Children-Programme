@@ -153,6 +153,12 @@ const SUCCESS_STORIES = [
     achievement: "Diploma in Automotive Engineering",
     story: "Mwangi studied at Nairobi National Polytechnic, attaining his Diploma in Automotive Engineering in 2026",
   },
+  {
+    photo: "/img_3.jpeg",
+    name: "Brian Japheth",
+    achievement: "Certificate in Electrical Engineering",
+    story: "Mwangi studied at Nairobi National Polytechnic, attaining his Certificate in Electrical Engineering in 2026",
+  },
 ];
 
 const GALLERY_IMAGES = [

@@ -154,7 +154,7 @@ const SUCCESS_STORIES = [
     story: "Mwangi studied at Nairobi National Polytechnic, attaining his Diploma in Automotive Engineering in 2026",
   },
   {
-    photo: "/img_3.jpeg",
+    photo: "/img_3.jpg",
     name: "Brian Japheth",
     achievement: "Certificate in Electrical Engineering",
     story: "Mwangi studied at Nairobi National Polytechnic, attaining his Certificate in Electrical Engineering in 2026",

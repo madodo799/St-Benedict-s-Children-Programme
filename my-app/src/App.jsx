@@ -571,7 +571,7 @@ function Stories({
         {/* All existing SUCCESS_STORIES are displayed here unchanged. */}
         <div
           ref={trackRef}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
+          className="flex items-stretch snap-x snap-mandatory gap-4 overflow-x-auto pb-6 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           aria-label="Success stories"
@@ -579,7 +579,7 @@ function Stories({
           {people.map((person, index) => (
             <article
               key={person.name}
-              className="story-card group w-[82vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-white/65 shadow-[0_12px_35px_rgba(47,15,3,0.12)] ring-1 ring-[#2F0F03]/10 transition-transform duration-300 hover:-translate-y-1 sm:w-[45vw] md:w-[29vw] lg:w-[15.7%]"
+              className="story-card group flex h-full w-[82vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl bg-[#2F0F03] shadow-[0_12px_35px_rgba(47,15,3,0.12)] ring-1 ring-[#2F0F03]/20 transition-transform duration-300 hover:-translate-y-1 sm:w-[45vw] md:w-[29vw] lg:w-[15.7%]"
             >
               <div className="relative aspect-[4/4.7] w-full overflow-hidden bg-[#2F0F03]/10">
                 <img

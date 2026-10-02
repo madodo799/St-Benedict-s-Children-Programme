@@ -597,7 +597,7 @@ function Stories({
                 </div>
               </div>
 
-              <div className="min-h-[175px] bg-[#2F0F03] p-4 sm:p-5">
+              <div className="flex min-h-[175px] flex-1 flex-col bg-[#2F0F03] p-4 sm:p-5">
                 <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#FAAA48]">
                   Success story
                 </p>

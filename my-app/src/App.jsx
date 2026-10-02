@@ -597,20 +597,20 @@ function Stories({
                 </div>
               </div>
 
-              <div className="min-h-[175px] bg-[#FFDDAC] p-4 sm:p-5">
+              <div className="min-h-[175px] bg-[#2F0F03] p-4 sm:p-5">
                 <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#FAAA48]">
                   Success story
                 </p>
 
-                <h3 className="font-display mb-2 text-lg font-semibold leading-tight text-[#2F0F03]">
+                <h3 className="font-display mb-2 text-lg font-semibold leading-tight text-[#FFDDAC]">
                   {person.name}
                 </h3>
 
-                <p className="mb-3 text-xs font-semibold uppercase leading-relaxed tracking-[0.08em] text-[#2F0F03]/70">
+                <p className="mb-3 text-xs font-semibold uppercase leading-relaxed tracking-[0.08em] text-[#FFDDAC]/80">
                   {person.achievement}
                 </p>
 
-                <p className="text-sm leading-relaxed text-[#2F0F03]/80">
+                <p className="text-sm leading-relaxed text-[#FFDDAC]/90">
                   {person.story}
                 </p>
               </div>

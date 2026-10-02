@@ -390,18 +390,22 @@ function Stories({
         });
       }
 
+      // Keep the cards visible at all times. Using opacity: 0 in a ScrollTrigger
+      // can leave the carousel blank if the section is already past the trigger
+      // point when the page loads. We only animate position.
+      gsap.set(cards, { opacity: 1, y: 0 });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 78%",
+          start: "top 85%",
           end: "bottom 20%",
-          toggleActions: "play reverse play reverse",
+          toggleActions: "play none none none",
         },
       });
 
       if (split) {
         tl.from(split.words, {
-          opacity: 0,
           y: 24,
           duration: 0.55,
           stagger: 0.05,
@@ -412,11 +416,11 @@ function Stories({
       tl.from(
         cards,
         {
-          opacity: 0,
           y: 35,
           duration: 0.65,
           stagger: 0.08,
           ease: "power2.out",
+          immediateRender: false,
         },
         "-=0.2"
       );
@@ -532,13 +536,13 @@ function Stories({
         {/* Horizontal story cards */}
         <div
           ref={trackRef}
-          className="story-track flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
+          className="story-track visible flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 pt-1 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
           aria-label="Success stories carousel"
         >
           {people.map((person, index) => (
             <article
               key={person.name}
-              className="story-card group w-[82vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-white/65 shadow-[0_12px_35px_rgba(47,15,3,0.10)] ring-1 ring-[#2F0F03]/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(47,15,3,0.16)] sm:w-[46vw] md:w-[30vw] lg:w-[15.7%]"
+              className="story-card group visible w-[82vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-white/65 shadow-[0_12px_35px_rgba(47,15,3,0.10)] ring-1 ring-[#2F0F03]/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(47,15,3,0.16)] sm:w-[46vw] md:w-[30vw] lg:w-[15.7%]"
             >
               {/* Photo */}
               <div className="relative aspect-[4/4.7] w-full overflow-hidden bg-[#2F0F03]/10">
@@ -1164,7 +1168,7 @@ export default function CompanySite() {
           {/* Other Well-Wishers */}
           <div className="group rounded-2xl bg-[#FFDDAC] p-6 text-[#2F0F03] shadow-lg ring-1 ring-[#FAAA48]/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#FAAA48] text-2xl">
-              
+              ❤️
             </div>
 
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#FAAA48]">

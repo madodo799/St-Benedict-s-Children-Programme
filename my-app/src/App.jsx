@@ -26,7 +26,7 @@ const DONATION_INFO = {
   absaAccount: "0671410505",
 };
 
-const CONTACT_EMAIL = "st.benedict.c.p@gmail.com";
+const CONTACT_EMAIL = "parishbenedict@gmail.com";
 
 const NAV_ITEMS = [
   { id: "background", label: "Background" },
@@ -56,6 +56,14 @@ const CORE_VALUES = [
   "Respect",
 ];
 
+// NOTE: Each story photo can optionally set `objectPosition` to fine-tune how
+// it's cropped inside the fixed 4:5 card frame. Most portrait photos look
+// fine with the default ("center 15%", biased slightly toward the top so
+// heads aren't cut off). A few photos are framed differently by the
+// photographer (closer crop, subject positioned differently in frame) and
+// need their own value — adjust the percentage until the subject sits well
+// inside the card. Format is CSS `object-position`: "x% y%" (y% controls
+// vertical framing, which is what usually needs adjusting for portraits).
 const SUCCESS_STORIES = [
   {
     photo: "/img_7.jpeg",
@@ -88,46 +96,68 @@ const SUCCESS_STORIES = [
     story: "Lilian studied at Mount Kenya University, earning her degree in Business Administration and Economics in 2026.",
   },
   {
-    photo: "/img_22.jpeg",
+    photo: "/img_22.png",
     name: "Stephen Omondi",
     achievement: "University Graduate — Degree in Entrepreneurship",
     story: "Stephen studied at Jomo Kenyatta University, attaining his degree in Entrepreneurship in 2020.",
   },
   {
-    photo: "/img_29.jpeg",
+    photo: "/img_23.png",
     name: "Stephen Nkalovwe",
     achievement: "University Graduate — Degree in Analytical Chemistry",
     story: "Stephen studied at Jomo Kenyatta University, attaining his Degree in Analytical Chemistry in 2021.",
   },
   {
-    photo: "/img_30.jpeg",
+    photo: "/img_24.png",
     name: "Walter Oketch",
     achievement: "Diploma in Photogrammetry and Remote Sensing",
     story: "Walter studied at the Kenya Institute of Survey and Mapping, attaining his Diploma in Photogrammetry and Remote Sensing in 2019.",
   },
   {
-    photo: "/img_25.jpeg",
+    photo: "/img_25.png",
     name: "Julius Mutisya",
     achievement: "Diploma in Social Work",
     story: "Julius studied at the East African Institute, attaining his Diploma in Social Work in 2018.",
   },
   {
-    photo: "/img_26.jpeg",
+    photo: "/img_26.png",
     name: "Peter Kioko",
     achievement: "Diploma in Medical Records",
     story: "Peter studied at the Technical University of Kenya, attaining his Diploma in Medical Records in 2019.",
   },
   {
-    photo: "/img_27.jpeg",
+    photo: "/img_29.jpg",
     name: "Stephine Moseti",
     achievement: "Diploma in Social Work",
     story: "Stephine studied at the East African Institute, attaining her Diploma in Social Work in 2018.",
+    // This source photo is a closer/tighter portrait than the others, so the
+    // shared default crop pushed the top of the head out of frame. Biasing
+    // further toward the top (a smaller y%) keeps the whole head visible.
+    objectPosition: "center 8%",
   },
   {
-    photo: "/img_28.jpeg",
+    photo: "/img_28.png",
     name: "Patrick Odhiambo",
     achievement: "Degree in Statistics",
     story: "Patrick studied at Taita Taveta University, attaining his Degree in Statistics in 2018.",
+  },
+   {
+    photo: "/img_1.jpg",
+    name: "Degracious Esamai",
+    achievement: "Diploma in Mechanical Engineering",
+    story: "Degracious  studied at Nairobi National Polytechnic, attaining his Diploma in Mechanical Engineering in 2026.",
+  },
+   {
+    photo: "/img_2.jpg",
+    name: "Charles Mwangi",
+    achievement: "Diploma in Automotive Engineering",
+    story: "Mwangi studied at Nairobi National Polytechnic, attaining his Diploma in Automotive Engineering in 2026",
+  },
+  {
+    photo: "/img_3.jpg",
+    name: "Brian Japheth",
+    achievement: "Certificate in Electrical Engineering",
+    story: "Mwangi studied at Nairobi National Polytechnic, attaining his Certificate in Electrical Engineering in 2026",
   },
 ];
 
@@ -145,7 +175,7 @@ const GALLERY_IMAGES = [
 const ACTIVITY_IMAGES = [
   { src: "/img_1.jpeg", alt: "Activity photo 1" },
   { src: "/img_2.jpeg", alt: "Activity photo 2" },
-  { src: "/img_3.jpeg", alt: "Activity photo 3" },
+  { src: "/img_13.jpeg", alt: "Activity photo 3" },
   { src: "/img_4.jpeg", alt: "Activity photo 4" },
   { src: "/img_5.jpeg", alt: "Activity photo 5" },
   { src: "/img_12.jpeg", alt: "Activity photo 6" },
@@ -368,7 +398,7 @@ function Stories({
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const trackRef = useRef(null);
-  const [storiesPaused, setStoriesPaused] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   useGSAP(
     () => {
@@ -376,13 +406,16 @@ function Stories({
 
       if (!cards?.length) return;
 
+      // Keep every card visible. The animation only moves the cards,
+      // so none of the existing photos can disappear because of opacity.
+      gsap.set(cards, { opacity: 1 });
+
       if (prefersReducedMotion()) {
-        gsap.set(cards, { opacity: 1, y: 0 });
+        gsap.set(cards, { x: 0, y: 0, scale: 1 });
         return;
       }
 
       let split;
-
       if (titleRef.current) {
         split = SplitText.create(titleRef.current, {
           type: "words",
@@ -390,17 +423,12 @@ function Stories({
         });
       }
 
-      // Keep the cards visible at all times. Using opacity: 0 in a ScrollTrigger
-      // can leave the carousel blank if the section is already past the trigger
-      // point when the page loads. We only animate position.
-      gsap.set(cards, { opacity: 1, y: 0 });
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 85%",
+          start: "top 78%",
           end: "bottom 20%",
-          toggleActions: "play none none none",
+          toggleActions: "play reverse play reverse",
         },
       });
 
@@ -416,11 +444,10 @@ function Stories({
       tl.from(
         cards,
         {
-          y: 35,
-          duration: 0.65,
-          stagger: 0.08,
+          y: 30,
+          duration: 0.55,
+          stagger: 0.06,
           ease: "power2.out",
-          immediateRender: false,
         },
         "-=0.2"
       );
@@ -430,50 +457,59 @@ function Stories({
     { scope: sectionRef, dependencies: [people.length] }
   );
 
-  useEffect(() => {
-    if (storiesPaused || prefersReducedMotion() || people.length <= 1) {
-      return undefined;
-    }
+  const getStep = () => {
+    const track = trackRef.current;
+    const firstCard = track?.querySelector(".story-card");
 
-    const timer = window.setInterval(() => {
-      const track = trackRef.current;
-      if (!track) return;
+    if (!track || !firstCard) return 0;
 
-      const firstCard = track.querySelector(".story-card");
-      if (!firstCard) return;
+    const cardWidth = firstCard.getBoundingClientRect().width;
+    const styles = getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || "0");
 
-      const cardWidth = firstCard.getBoundingClientRect().width;
-      const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || "0");
-      const step = cardWidth + gap;
-
-      const maxScroll = track.scrollWidth - track.clientWidth;
-
-      if (track.scrollLeft >= maxScroll - 10) {
-        track.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        track.scrollBy({ left: step, behavior: "smooth" });
-      }
-    }, 5000);
-
-    return () => window.clearInterval(timer);
-  }, [storiesPaused, people.length]);
+    return cardWidth + gap;
+  };
 
   const moveStories = (direction) => {
     const track = trackRef.current;
-    if (!track) return;
+    const step = getStep();
 
-    const firstCard = track.querySelector(".story-card");
-    if (!firstCard) return;
-
-    const cardWidth = firstCard.getBoundingClientRect().width;
-    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || "0");
-    const step = cardWidth + gap;
+    if (!track || !step) return;
 
     track.scrollBy({
       left: direction * step * 2,
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    if (paused || prefersReducedMotion() || people.length <= 1) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      const track = trackRef.current;
+      const step = getStep();
+
+      if (!track || !step) return;
+
+      const maxScroll = track.scrollWidth - track.clientWidth;
+
+      if (track.scrollLeft >= maxScroll - 10) {
+        track.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      } else {
+        track.scrollBy({
+          left: step * 2,
+          behavior: "smooth",
+        });
+      }
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, [paused, people.length]);
 
   return (
     <section
@@ -482,10 +518,10 @@ function Stories({
       className={`${toneClasses(tone)} font-body scroll-mt-20 overflow-hidden px-4 py-20 sm:px-6 md:px-10 lg:px-12`}
     >
       <div className="mx-auto max-w-[1500px]">
-        {/* Section heading */}
+        {/* Heading + controls */}
         <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#FAAA48]">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#FAAA48]">
               {eyebrow}
             </p>
 
@@ -496,61 +532,61 @@ function Stories({
               {title}
             </h2>
 
-            <p className="max-w-2xl text-base leading-relaxed opacity-75 sm:text-lg">
+            <p className="max-w-2xl text-base leading-relaxed opacity-80 sm:text-lg">
               Young people who grew up in our programme and went on to graduate
               from university or college.
             </p>
           </div>
 
-          {/* Desktop controls */}
           <div className="hidden shrink-0 items-center gap-3 sm:flex">
             <button
               type="button"
               onClick={() => moveStories(-1)}
               aria-label="Previous success stories"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2F0F03]/35 bg-transparent text-[#2F0F03] transition-all hover:-translate-x-0.5 hover:bg-[#FAAA48] hover:border-[#FAAA48]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2F0F03]/30 text-[#2F0F03] transition-all hover:bg-[#FAAA48] hover:border-[#FAAA48]"
             >
               ←
             </button>
 
             <button
               type="button"
-              onClick={() => setStoriesPaused((value) => !value)}
-              aria-label={storiesPaused ? "Play success stories" : "Pause success stories"}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2F0F03]/35 bg-transparent text-sm font-semibold text-[#2F0F03] transition-all hover:bg-[#FAAA48] hover:border-[#FAAA48]"
+              onClick={() => setPaused((value) => !value)}
+              aria-label={paused ? "Play success stories" : "Pause success stories"}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2F0F03]/30 text-sm font-semibold text-[#2F0F03] transition-all hover:bg-[#FAAA48] hover:border-[#FAAA48]"
             >
-              {storiesPaused ? "▶" : "Ⅱ"}
+              {paused ? "▶" : "Ⅱ"}
             </button>
 
             <button
               type="button"
               onClick={() => moveStories(1)}
               aria-label="Next success stories"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2F0F03]/35 bg-transparent text-[#2F0F03] transition-all hover:translate-x-0.5 hover:bg-[#FAAA48] hover:border-[#FAAA48]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2F0F03]/30 text-[#2F0F03] transition-all hover:bg-[#FAAA48] hover:border-[#FAAA48]"
             >
               →
             </button>
           </div>
         </div>
 
-        {/* Horizontal story cards */}
+        {/* All existing SUCCESS_STORIES are displayed here unchanged. */}
         <div
           ref={trackRef}
-          className="story-track visible flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 pt-1 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
-          aria-label="Success stories carousel"
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          aria-label="Success stories"
         >
           {people.map((person, index) => (
             <article
               key={person.name}
-              className="story-card group visible w-[82vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-white/65 shadow-[0_12px_35px_rgba(47,15,3,0.10)] ring-1 ring-[#2F0F03]/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(47,15,3,0.16)] sm:w-[46vw] md:w-[30vw] lg:w-[15.7%]"
+              className="story-card group w-[82vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-white/65 shadow-[0_12px_35px_rgba(47,15,3,0.12)] ring-1 ring-[#2F0F03]/10 transition-transform duration-300 hover:-translate-y-1 sm:w-[45vw] md:w-[29vw] lg:w-[15.7%]"
             >
-              {/* Photo */}
               <div className="relative aspect-[4/4.7] w-full overflow-hidden bg-[#2F0F03]/10">
                 <img
                   src={person.photo}
                   alt={person.name}
                   loading={index < 6 ? "eager" : "lazy"}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   style={{
                     objectPosition: person.objectPosition || "center 15%",
                   }}
@@ -561,8 +597,7 @@ function Stories({
                 </div>
               </div>
 
-              {/* Story information */}
-              <div className="min-h-[170px] bg-[#FFDDAC] p-4 sm:p-5">
+              <div className="min-h-[175px] bg-[#FFDDAC] p-4 sm:p-5">
                 <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#FAAA48]">
                   Success story
                 </p>
@@ -575,7 +610,7 @@ function Stories({
                   {person.achievement}
                 </p>
 
-                <p className="line-clamp-4 text-sm leading-relaxed text-[#2F0F03]/80">
+                <p className="text-sm leading-relaxed text-[#2F0F03]/80">
                   {person.story}
                 </p>
               </div>
@@ -583,7 +618,6 @@ function Stories({
           ))}
         </div>
 
-        {/* Bottom information line */}
         <div className="mt-2 flex items-center justify-center gap-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#2F0F03]/55">
           <span>{people.length} success stories</span>
           <span className="h-px w-12 bg-[#2F0F03]/30" />
@@ -797,7 +831,7 @@ export default function CompanySite() {
             aria-label="St Benedict's Children Centre - Home"
           >
             <img
-              src="/logo.png"
+              src="/Logo.png"
               alt="St Benedict's Children Centre logo"
               className="h-12 w-12 object-contain sm:h-14 sm:w-14"
             />
@@ -1118,7 +1152,7 @@ export default function CompanySite() {
           {/* Kinder-Initiative Kenia (KIK) */}
           <div className="group rounded-2xl bg-[#FFDDAC] p-6 text-[#2F0F03] shadow-lg ring-1 ring-[#FAAA48]/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#FAAA48] text-2xl">
-              🇩🇪
+              1
             </div>
 
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#FAAA48]">
@@ -1143,7 +1177,7 @@ export default function CompanySite() {
           {/* St. Benedict's Parish */}
           <div className="group rounded-2xl bg-[#FFDDAC] p-6 text-[#2F0F03] shadow-lg ring-1 ring-[#FAAA48]/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#FAAA48] text-2xl">
-              ⛪
+              2
             </div>
 
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#FAAA48]">
@@ -1168,7 +1202,7 @@ export default function CompanySite() {
           {/* Other Well-Wishers */}
           <div className="group rounded-2xl bg-[#FFDDAC] p-6 text-[#2F0F03] shadow-lg ring-1 ring-[#FAAA48]/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#FAAA48] text-2xl">
-              ❤️
+              3
             </div>
 
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#FAAA48]">
